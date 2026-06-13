@@ -1,0 +1,28 @@
+# === Secrets / personal — never commit these ===
+.env
+.env.*
+*.key
+*.pem
+secrets.*
+credentials.*
+
+# === OS / editor junk ===
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# === Dependencies / build output ===
+node_modules/
+dist/
+build/
+out/
+target/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# === Logs ===
+*.log

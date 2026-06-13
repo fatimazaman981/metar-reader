@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METAR Reader — plain-English airport weather</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="card">
+        <h1>🛫 METAR Reader</h1>
+        <p class="tagline">Type an airport code and get its weather in plain English.</p>
+
+        <form method="POST" action="/" id="weather-form">
+            <input
+                type="text"
+                name="station"
+                value="{{ station }}"
+                placeholder="e.g. KJFK, EGLL, OPIS"
+                autocomplete="off"
+                autofocus
+                maxlength="4">
+            <button type="submit">
+                <span class="btn-label">Get weather</span>
+                <span class="spinner" aria-hidden="true"></span>
+            </button>
+        </form>
+
+        <div class="examples">
+            Try:
+            <button type="button" class="chip" data-code="KJFK">New York</button>
+            <button type="button" class="chip" data-code="EGLL">London</button>
+            <button type="button" class="chip" data-code="OPIS">Islamabad</button>
+            <button type="button" class="chip" data-code="OMDB">Dubai</button>
+        </div>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if report %}
+            <section class="report">
+                <div class="hero">
+                    <div class="hero-icon">{{ report.icon }}</div>
+                    <div class="hero-temp">
+                        {% if report.temp_f is not none %}
+                            <span class="big">{{ report.temp_f }}°F</span>
+                            <span class="small">{{ report.temp_c }}°C</span>
+                        {% endif %}
+                        <span class="station">{{ report.name }}</span>
+                    </div>
+                </div>
+                {% if report.time %}
+                    <p class="observed">Observed at {{ report.time }}</p>
+                {% endif %}
+                <ul>
+                    {% for sentence in report.sentences %}
+                        <li>{{ sentence }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if raw %}
+            <details class="raw">
+                <summary>Show raw METAR code</summary>
+                <code>{{ raw }}</code>
+            </details>
+        {% endif %}
+    </main>
+
+    <footer>
+        Weather data from NOAA Aviation Weather. For educational use.
+    </footer>
+
+    <script>
+        const form = document.getElementById("weather-form");
+        const input = form.querySelector("input[name='station']");
+
+        // Quick-pick chips fill the box and submit immediately.
+        document.querySelectorAll(".chip").forEach(chip => {
+            chip.addEventListener("click", () => {
+                input.value = chip.dataset.code;
+                form.requestSubmit();
+            });
+        });
+
+        // Show the spinner / disable the button while the request is in flight.
+        form.addEventListener("submit", () => {
+            form.classList.add("loading");
+        });
+    </script>
+</body>
+</html>
