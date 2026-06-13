@@ -69,6 +69,11 @@ Then open **http://127.0.0.1:5000** in your browser.
 4. `app.py` turns that data into plain-English sentences and a weather icon.
 5. The result is displayed in a clean weather card.
 
+   
+<img width="966" height="461" alt="image" src="https://github.com/user-attachments/assets/fe02de34-88b9-4354-a502-e9c4a3b481d3" />
+<img width="873" height="888" alt="image" src="https://github.com/user-attachments/assets/f5b6be35-0f09-436b-b33f-c2133d3177f3" />
+
+
 ## License
 
 For educational use.
